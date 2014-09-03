@@ -36,7 +36,7 @@ class ClientController extends Controller
     'users'=>array('*'),
    ),
  array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions' => array('confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'blacklistchoice', 'allblacklistchoice', 'removeallblacklistchoice', 'removeblacklistchoice'),
+        'actions' => array('myfinancials','confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'blacklistchoice', 'allblacklistchoice', 'removeallblacklistchoice', 'removeblacklistchoice'),
         'users' => array('@'),
    ),
    array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -175,11 +175,14 @@ class ClientController extends Controller
     }
  }
     public function actionDashbord() {
-
         $model = Client::model()->findByPk(Yii::app()->user->id);
-
+        $credit_historys = CreditHistory::model()->findAllByPk(Yii::app()->user->id);
+        $credit_used = null;
+        foreach ($credit_historys as  $credit_history ){          
+            $credit_used = $credit_used+ $credit_history->ch_amount;
+        }
         $this->render('/Client/dashbord', array(
-            'model' => $model,
+            'model' => $model,'credit_used'=>$credit_used
 
         ));
     }
@@ -432,16 +435,16 @@ class ClientController extends Controller
         $this->render('Client/cancel');
     }
    
-    public function actionMyFinancials() {
-        $press_user = Yii::app()->user->id;
+  public function  actionMyFinancials(){
+          $press_user = Yii::app()->user->id;
         $criteria = new CDbCriteria;
         $criteria->condition = 'ch_user=:press_user';
         $criteria->params = array(':press_user' => $press_user);
         $criteria->order = 'ch_date DESC';
-        $credit_historys = CreditHistory::model()->findAll($criteria);
-        $this->render('myfinancials', array(
-            'presses' => $presses,));
-    }
+         $credit_historys = CreditHistory::model()->findAll($criteria); 
+        $this->render('/Client/myfinancials', array(
+            'credit_historys' => $credit_historys,
+  ));}
 
     public function actionBuyCredits() {
         Yii::app()->session['credit_price'] = $_POST['credit_price'];
