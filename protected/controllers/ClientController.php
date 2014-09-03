@@ -290,7 +290,7 @@ class ClientController extends Controller
         // set 
         if (Yii::app()->session['credit_amount'] == 9000) {
             $paymentInfo['Order']['theTotal'] = 2450.00;
-            $paymentInfo['Order']['description'] = "Annual subscription";
+            $paymentInfo['Order']['description'] = "Pan African Account";
             $paymentInfo['Order']['quantity'] = '1';
         } else {
             $paymentInfo['Order']['theTotal'] = 350.00;

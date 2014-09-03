@@ -43,10 +43,6 @@ class ScriptController extends Controller {
                         $email->replyEmail = $press->press_replyto_email;
                         $email->toName = $contact->contact_name_last . ' ' . $contact->contact_name_first;
                         $email->toEmail = $contact->contact_email;
-//                        $email->img2_content = file_get_contents(Yii::app()->basePath . '/uploads/' . $press->press_file_2);
-//                        $email->img2_content = base64_encode($email->img2_content);
-//                        $email->img3_content = file_get_contents(Yii::app()->basePath . '/uploads/' . $press->press_file_3);
-//                        $email->img3_content = base64_encode($email->img3_content);
                         $extension1 = pathinfo($press->press_file_1, PATHINFO_EXTENSION);
                         if (!empty($press->press_file_1)) {
                             $img1_content = file_get_contents(Yii::app()->basePath . '/uploads/' . $press->press_file_1);

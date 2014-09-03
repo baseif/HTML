@@ -33,9 +33,9 @@ $('.search-form form').submit(function(){
             </tr>
             <?php
             foreach ($credit_historys as $value) {
-                echo '<td>' . $value->ch_date . '</td>';
+                echo '<tr><td>' . $value->ch_date . '</td>';
                 echo '<td>' . $value->listcontact->list_name.'</td>';
-                echo '<td>' . $value->ch_amount. '</td>';   
+                echo '<td>' . $value->ch_amount. '</td></tr>';   
             }
             ?>
         </table>

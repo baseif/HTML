@@ -171,7 +171,7 @@ browser)<br />
         // set 
         if (Yii::app()->session['type'] == 0) {
             $paymentInfo['Order']['theTotal'] = 2450.00;
-            $paymentInfo['Order']['description'] = "Annual subscription";
+            $paymentInfo['Order']['description'] = "Pan African Account";
             $paymentInfo['Order']['quantity'] = '1';
         } else {
             $paymentInfo['Order']['theTotal'] = 350.00;
@@ -263,8 +263,8 @@ browser)<br />
                 $paypal_transactions->pp_date = $paymentResult['ORDERTIME'];
                 $paypal_transactions->pp_user_id = Yii::app()->session['id'];
                 if (Yii::app()->session['type'] == 0) {
-                    $paypal_transactions->pp_item = "full package";
-                    $credit_package->package_title = 'full package';
+                    $paypal_transactions->pp_item = "Pan African Account";
+                    $credit_package->package_title = 'Pan African Account';
                     $credit->credit_show = 'N';
                     $credit->credit_amount = 9000;
                     $credit->credit_price = 2450.00;
@@ -284,8 +284,8 @@ browser)<br />
                     $user->save(false);
                     
                 } else {
-                    $paypal_transactions->pp_item = "notfull package";
-                    $credit_package->package_title = ' notfull package';
+                    $paypal_transactions->pp_item = "Starters Offer ";
+                    $credit_package->package_title = ' Starters Offer ';
                     $credit->credit_show = 'N';
                     $credit->credit_amount = 1000;
                     $credit->credit_price = 350.00;
