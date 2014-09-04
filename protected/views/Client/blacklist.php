@@ -5,7 +5,7 @@
 ?>
 <script>
 $(document).ready(function() {
-<?php if(count($user)==0){ ?> document.getElementById("tagUpdate").disabled = true; <?php } ?>    
+   
 
 
         //$("a[name='add']").attr('disabled','disabled');
@@ -17,8 +17,8 @@ $(document).ready(function() {
 </script>
 
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/blacklist.js"></script>
 
-<?php include('js/blacklist.php'); ?>
 <h1> <?php echo  Yii::t('app','Black List') ?></h1>
 
 <div class="form">

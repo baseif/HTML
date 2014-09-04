@@ -554,4 +554,13 @@ class ClientController extends Controller
 
         $this->render('Client/cancelbuycredits');
     }
+    
+    public function  actionIncreaseCredit(){
+        
+        $this->render('/Client/increasecredit', array(
+            'credit_historys' => $credit_historys,
+        ));
+        
+    }
+    
 }
