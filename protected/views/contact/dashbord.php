@@ -17,7 +17,7 @@
                     </tr><tr><td><?php echo  Yii::t('app','Phone');?>:</td>
                         <td><?php echo $model->contact_phone; ?></td></tr><tr>
                     </tr><tr><td><?php echo  Yii::t('app','Address');?>:</td>
-                        <td><?php echo $model->contact_adress; ?></td></tr><tr>
+                        <td><?php echo $model->contact_adress.' '.$model->contact_address_nr; ?></td></tr><tr>
                     </tr><tr><td style="color:red;" colspan="2"></td></tr>
                 </tbody></table>
 

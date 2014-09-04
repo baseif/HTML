@@ -142,7 +142,7 @@ class Client extends CActiveRecord
             'usetting_replyto_name' => ' Replyto Name',
             'usetting_replyto_email' => ' Replyto Email',
             'usetting_bounce_email' => ' Bounce Email',
-            'credittype' => 'subscription type',
+            'credittype' => '<div class="typeaccount">Subscription type</div>',
         );
     }
 

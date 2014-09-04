@@ -17,22 +17,22 @@ return
             
           // "base_url" => "http://presslist.test.bidnet.vc/index.php/user/login/oauth", 
             
-           "base_url" => "http://localhost/APL/index.php/user/login/oauth",
-		//	"base_url" => "https://tompanther.arvixe.com/~webside/yetgroup.com/demo-webserver/APL/index.php/user/login/oauth", 
+           //"base_url" => "http://localhost/APL/index.php/user/login/oauth",
+			"base_url" => "https://tompanther.arvixe.com/~webside/yetgroup.com/demo-webserver/APL/index.php/user/login/oauth", 
             "providers" => array(
                 
 //                //Local APP
-               "LinkedIn" => array(
-                   "enabled" => true,
-                   "keys" => array("key" => "771y4v85zbk8kt", "secret" => "4JkmTIpHPAjq1p1t")
-               ),
+               //"LinkedIn" => array(
+                   //"enabled" => true,
+                   //"keys" => array("key" => "771y4v85zbk8kt", "secret" => "4JkmTIpHPAjq1p1t")
+               //),
                 // Tompath App
-//                        "LinkedIn" => array ( 
-//				"enabled" => true,
-//				"keys"    => array ( "key" => "77zho8cnt43619", "secret" => "IWYsGHsppcq7aqzN" ) 
-//			),
-//			
-//		// presslist.test App
+                        "LinkedIn" => array ( 
+				"enabled" => true,
+				"keys"    => array ( "key" => "77zho8cnt43619", "secret" => "IWYsGHsppcq7aqzN" ) 
+			),
+			
+		// presslist.test App
    //                      "LinkedIn" => array ( 
 			// 	"enabled" => true,
 			// 	"keys"    => array ( "key" => "77om7tcf0jkc3j", "secret" => "TkMSZ5cWx7J3UbF2" ) 
@@ -58,15 +58,15 @@ return
 //				"keys"    => array ( "id" => "", "secret" => "" )
 //			),
                 //loca APP
-               "Facebook" => array(
-                   "enabled" => true,
-                   "keys" => array("id" => "470579799712118", "secret" => "603ece206500ba591cbd3aaba30281cc")
-               ),
+//               "Facebook" => array(
+//                   "enabled" => true,
+//                   "keys" => array("id" => "470579799712118", "secret" => "603ece206500ba591cbd3aaba30281cc")
+//               ),
                 // Tompath App
-//                    "Facebook" => array ( 
-//				"enabled" => true,
-//				"keys"    => array ( "id" => "1451324215128801", "secret" => "70c1925ce3498786a5c72ef9f35abcbf" )
-//			),
+                    "Facebook" => array ( 
+				"enabled" => true,
+				"keys"    => array ( "id" => "1451324215128801", "secret" => "70c1925ce3498786a5c72ef9f35abcbf" )
+			),
                  // presslist.test App
    //                  "Facebook" => array ( 
 			// 	"enabled" => true,
@@ -75,15 +75,15 @@ return
                 
                 
                 //Local APP
-               "Twitter" => array(
-                   "enabled" => true,
-                   "keys" => array("key" => "0uvgR9TunBDD9ugV8ws46xYXb", "secret" => "tu0F0lybbPRBIL0qnbzWFfyqYqQkB6sBgJUlwBOUPEg5w7TBim")
-               ),
+//               "Twitter" => array(
+//                   "enabled" => true,
+//                   "keys" => array("key" => "0uvgR9TunBDD9ugV8ws46xYXb", "secret" => "tu0F0lybbPRBIL0qnbzWFfyqYqQkB6sBgJUlwBOUPEg5w7TBim")
+//               ),
                 //Tompath APP
-//            "Twitter" => array ( 
-//                        "enabled" => true,
-//                        "keys"    => array ( "key" => "2t6NN2LJlUHwJBom4zqLFSdQN", "secret" => "LGXUQOqGDlr4RJkc93ZjYK5bYMO6oBHcNy81i7zwIgW3DfHv85" ) 
-//                ),
+            "Twitter" => array ( 
+                        "enabled" => true,
+                        "keys"    => array ( "key" => "2t6NN2LJlUHwJBom4zqLFSdQN", "secret" => "LGXUQOqGDlr4RJkc93ZjYK5bYMO6oBHcNy81i7zwIgW3DfHv85" ) 
+                ),
 //                //presslist.test App
             // "Twitter" => array ( 
             //             "enabled" => true,
