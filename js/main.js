@@ -227,5 +227,20 @@ function  Remove_Removeall()
             xhr.send(); 
  }
  
+ 
+ function calculatePrice(url,credit){
+     var totalurl = url + '/credit/'+credit;
+     //alert(totalurl);
+     ajaxsend(totalurl,'price')
+         if(document.getElementById('pricevalue').value>395){
+             document.getElementById('choose').disabled = false;
+         }
+         else{
+             document.getElementById('choose').disabled = true;
+         }
+     
+     
+ }
+ 
 
 

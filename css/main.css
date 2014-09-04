@@ -59,7 +59,8 @@ margin-right: -15px !important;}
 #registration-form{ border: none; box-shadow:none;}
 
 .inputradio{float:left;margin-right:10px !important;}
-
+.typeaccount{ font-size: 15px; color: #005581;}
+.price{font-size:28px; color:#ff0000;font-weight: bold;}
 
 .udetail-box {
     background-image: -moz-linear-gradient(center top , #ffffff, #f8f8f8);

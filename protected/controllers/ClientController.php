@@ -2,6 +2,110 @@
 
 class ClientController extends Controller {
 //    public $layout = '//layouts/column1';
+
+ /**
+  * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+  * using two-column layout. See 'protected/views/layouts/column2.php'.
+  */
+ //public $layout='//layouts/column2';
+
+ /**
+  * @return array action filters
+  */
+ public function filters()
+ {
+     
+  return array(
+   'accessControl', // perform access control for CRUD operations
+   'postOnly + delete', // we only allow deletion via POST request
+  );
+ }
+
+ /**
+  * Specifies the access control rules.
+  * This method is used by the 'accessControl' filter.
+  * @return array access control rules
+  */
+ public function accessRules()
+ {
+  return array(
+   array('allow',  // allow all users to perform 'index' and 'view' actions
+    'actions'=>array('index','dashbord','create'),
+    'users'=>array('*'),
+   ),
+ array('allow', // allow authenticated user to perform 'create' and 'update' actions
+        'actions' => array('myfinancials','confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'increasecredit','calculateprice'),
+        'users' => array('@'),
+   ),
+   array('allow', // allow admin user to perform 'admin' and 'delete' actions
+    'actions'=>array('admin','delete'),
+    'users'=>array('admin'),
+   ),
+   array('deny',  // deny all users
+    'users'=>array('*'),
+   ),
+  );
+ }
+
+ /**
+  * Displays a particular model.
+  * @param integer $id the ID of the model to be displayed
+  */
+ public function actionView($id)
+ {
+  $this->render('view',array(
+   'model'=>$this->loadModel($id),
+  ));
+ }
+ 
+ public function actionBlacklist()
+ {
+     
+     if(isset($_POST['client_id_black'])){
+         $blackclients = Contact::model()->findByPk(Yii::app()->user->id);
+        $client_id = $_POST['client_id_black'];
+        $blackclients->users = $client_id;
+        $blackclients->save();
+     }
+     $blackclients = Contact::model()->findByPk(Yii::app()->user->id);
+     $clients = Client::model()->findAll();
+     //print_r($clients);
+     $user = $blackclients->users;
+    // print_r($user);
+  $this->render('/Client/blacklist',array('clients'=>$clients,'user'=>$user));
+ }
+
+ 
+ 
+ /**
+  * Creates a new model.
+  * If creation is successful, the browser will be redirected to the 'view' page.
+  */
+ public function actionCreate()
+ {
+  $model=new Client;
+                
+
+  // Uncomment the following line if AJAX validation is needed
+   $this->performAjaxValidation($model);
+
+  if(isset($_POST['Client']))
+  {
+   $model->attributes=$_POST['Client'];
+   if($model->save())           
+
+		// Uncomment the following line if AJAX validation is needed
+		 $this->performAjaxValidation($model);
+
+		if(isset($_POST['Client']))
+		{
+			$model->attributes=$_POST['Client'];
+			if($model->save())           
+
+
+
+                $this->redirect(array('view', 'id' => $model->user_id));
+
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -118,6 +222,7 @@ class ClientController extends Controller {
                 $name = $element->porfile_name_first . ' ' . $element->porfile_name_last;
                 echo ' <option  selected value ="' . $value . '" >' . $name . '</option>';
             }
+>>>>>>> c7ebe8443aabcb5c9df5f4434911b2308f4fa57c
         }
         echo '</select>';
     }
@@ -538,8 +643,41 @@ class ClientController extends Controller {
     public function actionIncreaseCredit() {
 
         $this->render('/Client/increasecredit', array(
-            'credit_historys' => $credit_historys,
+            
         ));
     }
+<<<<<<< HEAD
+    
+    
+    public function  actionCalculateprice(){
+        $credit = $_GET['credit'];
+        if($credit<1000){
+            $price = $credit * 0.45;
+            $dollar = $credit * 0.61;
+        }
+        elseif($credit>=1000 && $credit<2500){
+            $price = $credit * 0.4;
+            $dollar = $credit * 0.54;
+        }
+        elseif($credit>=2500 && $credit<5000){
+            $price = $credit * 0.35;
+            $dollar = $credit * 0.47;
+        }
+        elseif($credit>=5000 && $credit<10000){
+            $price = $credit * 0.3;
+            $dollar = $credit * 0.41;
+        }
+        else{
+            $price = $credit * 0.25;
+            $dollar = $credit * 0.34;
+        }
+        echo '<input type="hidden" name="credit_price" id="pricevalue" value="'.$price.'" />';
+        echo $price.' € <br />';
+        echo $dollar.' $';
+        
+    }
+    
+=======
 
+>>>>>>> c7ebe8443aabcb5c9df5f4434911b2308f4fa57c
 }
