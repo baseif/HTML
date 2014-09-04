@@ -33,7 +33,7 @@
         <h3 class="udash-header"><?php echo Yii::t('app', 'Company:') ?></h3>
         <img width="92" height="83" src="<?php echo Yii::app()->request->baseUrl; ?>/images/dash-company.png">
         <table cellspacing="0" cellpadding="2" style="margin-top: 15px;">
-            <tbody style="padding: 9px 10px;">
+            <tbody style=" line-height:15px;">
                 <tr><td><?php echo Yii::t('app', 'Company') ?></td>
                     <td><?php echo $model->porfile_camp_name; ?></td></tr>
                 <tr><td><?php echo Yii::t('app', 'Function') ?>:</td>
