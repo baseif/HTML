@@ -176,13 +176,24 @@ class ClientController extends Controller
  }
     public function actionDashbord() {
         $model = Client::model()->findByPk(Yii::app()->user->id);
-        $credit_historys = CreditHistory::model()->findAllByPk(Yii::app()->user->id);
-        $credit_used = null;
+        $user_package = UserPackage::model()->findByPk(Yii::app()->user->id);
+        $credit_package = $user_package->creditPackage;
+        $date_expires = $user_package->utype_expires;
+        $date = time();
+        $date_left = null ;
+        if($user_package->utype_expires != null){
+        $date_left  = date('d',strtotime($user_package->utype_expires) - $date);}
+        $press_user =Yii::app()->user->id;
+         $criteria = new CDbCriteria;
+        $criteria->condition = 'ch_user=:press_user';
+        $criteria->params = array(':press_user' => $press_user);
+        $credit_historys = CreditHistory::model()->findAll($criteria);
+        $credit_used = 0;
         foreach ($credit_historys as  $credit_history ){          
             $credit_used = $credit_used+ $credit_history->ch_amount;
         }
         $this->render('/Client/dashbord', array(
-            'model' => $model,'credit_used'=>$credit_used
+            'model' => $model,'credit_used'=>$credit_used,'credit_package'=>$credit_package,'date_left'=>$date_left
 
         ));
     }

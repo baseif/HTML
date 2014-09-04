@@ -82,11 +82,11 @@
             <table cellspacing="0" cellpadding="2" style="margin-top: 15px;">
                 <tbody>
                     <tr><td><?php echo  Yii::t('app','Type of Account')  ?>:</td>
-                        <td><?php echo $credit_used ;?></td></tr>
+                        <td><?php echo $credit_package->package_title ?></td></tr>
                     <tr><td><?php echo  Yii::t('app','Days left') ?>:</td>
-                        <td></td></tr>
+                        <td><?php echo $date_left ?></td></tr>
                     <tr><td><?php echo  Yii::t('app','Press Releases Sent') ?>:</td>
-                        <td></td></tr>
+                           <td><?php echo $credit_used ;?></td></tr>
                     
                     </tbody></table>
 
