@@ -22,7 +22,7 @@ $this->breadcrumbs = array(
             'title' => 'Add Yourself As A Client',
             'context' => 'primary',
             'headerIcon' => 'user',
-            'content' => 'You, being a Client............., ',
+            'content' => 'You, being a Client , ',
             'htmlOptions' => array('class' => 'col-sm-15'),
                 )
         )

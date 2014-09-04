@@ -34,8 +34,8 @@
                     </tr><tr><td><?php echo  Yii::t('app','Phone') ?>:</td>
 
                         <td><?php echo $model->porfile_phone; ?></td></tr><tr>
-                    </tr><tr><td><?php echo  Yii::t('app','Address') ?></td>
-                        <td><?php echo $model->porfile_address; ?></td></tr><tr>
+                    </tr><tr><td><?php echo  Yii::t('app','Address:') ?></td>
+                        <td><?php echo $model->porfile_address.' '.$model->porfile_address_nr; ?></td></tr><tr>
 
                     </tr><tr><td style="color:red;" colspan="2"></td></tr>
                 </tbody></table>
@@ -48,7 +48,7 @@
        </div>
 <div class="span-9">
         <div class="udetail-box">
-            <h3 class="udash-header"><?php echo  Yii::t('app','Company') ?></h3>
+            <h3 class="udash-header"><?php echo  Yii::t('app','Company:') ?></h3>
             <img width="92" height="83" src="<?php echo Yii::app()->request->baseUrl; ?>/images/dash-company.png">
             <table cellspacing="0" cellpadding="2" style="margin-top: 15px;">
                 <tbody>
