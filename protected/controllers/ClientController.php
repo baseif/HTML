@@ -36,7 +36,7 @@ class ClientController extends Controller
     'users'=>array('*'),
    ),
  array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions' => array('myfinancials','confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'blacklistchoice', 'allblacklistchoice', 'removeallblacklistchoice', 'removeblacklistchoice'),
+        'actions' => array('myfinancials','confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'increasecredit','calculateprice'),
         'users' => array('@'),
    ),
    array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -76,67 +76,7 @@ class ClientController extends Controller
     // print_r($user);
   $this->render('/Client/blacklist',array('clients'=>$clients,'user'=>$user));
  }
- 
- public function actionBlacklistchoice()
- {
-    $source = $_GET['source'];
-    $destination= $_GET['destination'];
-    $tabsource = explode(',',$source);
-    $tabdestination = explode(',',$destination);
-    $tab = array_merge($tabsource,$tabdestination);
-    $final = array_unique($tab);
-    echo '<select size="15" multiple name="client_id_black[]" class="form-control" onchange="Remove_Removeall()" id="tagUpdate">';
-    foreach($final as $value){
-        if($value!=''){
-            $element = Client::model()->FindByPk($value);
-        $name = $element->porfile_name_first.' '.$element->porfile_name_last;
-        echo ' <option  selected value ="' . $value . '" >' . $name . '</option>';
-        }
-        
-    }
-    echo '</select>';
- }
 
- 
- 
- public function actionAllblacklistchoice(){
-     $source = $_GET['source'];
-     $tabsource = explode(',',$source);
-     //print_r($tabsource);
-      echo '<select size="15" multiple name="client_id_black[]" class="form-control" onchange="Remove_Removeall()" id="tagUpdate">';
-    foreach($tabsource as $value){
-        if($value!=''){
-            $element = Client::model()->FindByPk($value);
-            $name = $element->porfile_name_first.' '.$element->porfile_name_last;
-            echo ' <option selected   value ="' . $value . '" >' . $name . '</option>';
-        }
-        
-    }
-    echo '</select>';
- }
- 
- 
- public function actionRemoveallblacklistchoice(){
-      echo '<select size="15" multiple name="client_id_black[]" class="form-control" onchange="Remove_Removeall()" id="tagUpdate">';
-    echo '</select>';
- }
- 
- 
- public function actionRemoveblacklistchoice()
- {
-    $destination= $_GET['destination'];
-    $tabdestination = explode(',',$destination);
-    echo '<select size="15" multiple name="client_id_black[]" class="form-control" onchange="Remove_Removeall()" id="tagUpdate">';
-    foreach($tabdestination as $value){
-        if($value!=''){
-            $element = Client::model()->FindByPk($value);
-            $name = $element->porfile_name_first.' '.$element->porfile_name_last;
-            echo ' <option  selected value ="' . $value . '" >' . $name . '</option>';
-        }
-        
-    }
-    echo '</select>';
- }
  
  
  /**
@@ -547,8 +487,37 @@ class ClientController extends Controller
     public function  actionIncreaseCredit(){
         
         $this->render('/Client/increasecredit', array(
-            'credit_historys' => $credit_historys,
+            
         ));
+        
+    }
+    
+    
+    public function  actionCalculateprice(){
+        $credit = $_GET['credit'];
+        if($credit<1000){
+            $price = $credit * 0.45;
+            $dollar = $credit * 0.61;
+        }
+        elseif($credit>=1000 && $credit<2500){
+            $price = $credit * 0.4;
+            $dollar = $credit * 0.54;
+        }
+        elseif($credit>=2500 && $credit<5000){
+            $price = $credit * 0.35;
+            $dollar = $credit * 0.47;
+        }
+        elseif($credit>=5000 && $credit<10000){
+            $price = $credit * 0.3;
+            $dollar = $credit * 0.41;
+        }
+        else{
+            $price = $credit * 0.25;
+            $dollar = $credit * 0.34;
+        }
+        echo '<input type="hidden" name="credit_price" id="pricevalue" value="'.$price.'" />';
+        echo $price.' € <br />';
+        echo $dollar.' $';
         
     }
     
