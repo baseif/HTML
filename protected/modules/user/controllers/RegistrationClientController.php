@@ -23,10 +23,9 @@ class RegistrationClientController extends Controller {
     public function actionRegistration() {
         Profile::$regMode = true;
         $model = new RegistrationForm;
+
         //$profile = new Profile;
         $Client = new Client;
-
-
         // ajax validator
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
             // echo UActiveForm::validate(array($model, $profile));
@@ -39,9 +38,10 @@ class RegistrationClientController extends Controller {
             if (isset($_POST['RegistrationForm'], $_POST['Client'])) {
                 $model->attributes = $_POST['RegistrationForm'];
                 $Client->attributes = $_POST['Client'];
-
+                $Client->porfile_address = $_POST['Client']['porfile_address'];
+                $Client->porfile_address_nr = $_POST['Client']['porfile_address_nr'];
+                $Client->porfile_address_addon = $_POST['Client']['porfile_address_addon'];
                 Yii::app()->session['type'] = $_POST['Client']['credittype'];
-
                 if ($model->validate() && $Client->validate()) {
                     $soucePassword = $model->password;
                     $model->activkey = UserModule::encrypting(microtime() . $model->password);
@@ -247,7 +247,7 @@ browser)<br />
             } else {
                 //payment was completed successfully
                 //first purchase
-            Yii::import('ext.yii-mail.YiiMailMessage');
+                Yii::import('ext.yii-mail.YiiMailMessage');
                 $message = new YiiMailMessage;
                 $message->setBody(
                         UserModule::t("
@@ -267,12 +267,12 @@ To activate your account, simply click on the following link: <br /><br />
 (Some email client users may need to copy and paste the link into your web
 browser)<br />
                                            <br /> Thank you for registering ."
-                                , array('{activation_url}' =>      Yii::app()->session['activation_url']))
+                                , array('{activation_url}' => Yii::app()->session['activation_url']))
                         , 'text/html');
-                $message->subject = Yii::app()->session['subject'] ;
-                $message->addTo( Yii::app()->session['email']);
- 
-                $message->from =Yii::app()->session['form'];
+                $message->subject = Yii::app()->session['subject'];
+                $message->addTo(Yii::app()->session['email']);
+
+                $message->from = Yii::app()->session['form'];
                 Yii::app()->session['form'] = Yii::app()->params['adminEmail'];
 
                 Yii::app()->mail->send($message);

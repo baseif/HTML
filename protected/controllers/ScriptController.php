@@ -36,6 +36,7 @@ class ScriptController extends Controller {
                         $press_run->contact_id = $contact->contact_id;
                         $content = $press->press_content;
                         $content = str_replace("\r\n", '', $content);
+                   //     $content = htmlentities($content, ENT_QUOTES);
                         $email->html = $content;
                         $email->subject = $press->press_subject;
                         $email->fromName = $press->press_sender_name;

@@ -218,21 +218,21 @@ return array(
        //     'connectionString' => 'sqlite:' . dirname(__FILE__) . '/../data/testdrive.db',
        // ),
         // uncomment the following to use a MySQL database
-//        'db' => array(
-//            'connectionString' => 'mysql:host=localhost;dbname=presslist',
-//            'emulatePrepare' => true,
-//            'username' => 'root',
-//            'password' => 'root',
-//            'charset' => 'utf8',
-//        ),
+        'db' => array(
+            'connectionString' => 'mysql:host=localhost;dbname=africanpress_db_1',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+        ),
 ////            
-                'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=webside_apl',
-			'emulatePrepare' => true,
-			'username' => 'webside_apl',
-			'password' => 'F}-LT[Z3Vns2',
-			'charset' => 'utf8',
-		),
+//                'db'=>array(
+//			'connectionString' => 'mysql:host=localhost;dbname=webside_apl',
+//			'emulatePrepare' => true,
+//			'username' => 'webside_apl',
+//			'password' => 'F}-LT[Z3Vns2',
+//			'charset' => 'utf8',
+//		),
         'errorHandler' => array(
             // use 'site/error' action to display errors
             'errorAction' => 'site/error',
