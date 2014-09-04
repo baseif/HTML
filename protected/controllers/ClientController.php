@@ -173,7 +173,7 @@ class ClientController extends Controller {
             $credit_used = $credit_used + $credit_history->ch_amount;
         }
         $this->render('/Client/dashbord', array(
-            'model' => $model, 'credit_used' => $credit_used, 'credit_package' => $credit_package, 'date_left' => $days
+            'model' => $model, 'credit_used' => $credit_used, 'credit_package' => $credit_package, 'date_left' => $days,'user_package'=>$user_package
         ));
     }
 
