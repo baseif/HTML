@@ -171,23 +171,131 @@ class ContactController extends Controller {
     public function actionUpdate() {
         
 
-          $model = Contact::model()->findByPk(Yii::app()->user->id);
+         $model = Contact::model()->findByPk(Yii::app()->user->id);
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contact']))
 		{
 			$model->attributes=$_POST['Contact'];
-			if($model->save())
-				$this->redirect(array('dashbord','id'=>$model->contact_id));
+                       
+                        if(isset($_POST['businessCategory'])){
+                            $categories_id = $_POST['businessCategory'];
+                            $model->businessCategories = $categories_id;
+                        }
+                      
+                        if(isset($_POST['isoLanguage'])){
+                            $lang_iso = $_POST['isoLanguage'];
+                            $model->isoLanguages = $lang_iso;
+                        }
+                        
+			if($model->save()){
+                            
+                            
+                       
+                        
+                        ContactGeoCoverage::model()->deleteGeoCoverage($model->contact_id);
+                        ContactFunction::model()->deleteFunction($model->contact_id);
+                        RoleChannel::model()->deleteChannel($model->contact_id);
+                        
+                        for($i=1;$i<=$_POST['nbfield'];$i++){
+                        
+                            
+                            if(isset($_POST['company'.$i])){
+                                if(!empty($_POST['company'.$i]) && !empty($_POST['inputcountry'.$i]) && !empty($_POST['function'.$i])){
+                                $companies = $_POST['company'.$i];
+                                 
+
+                                    $countries = explode(',',$_POST['inputcountry'.$i]);
+                                    
+                                    
+                                    
+                                    foreach($countries as $c){
+                                        $cgc = new ContactGeoCoverage;                                       
+                                        $cgc->contact = $model->contact_id;
+                                        $cgc->company = $companies;
+                                        $cgc->geoCountry = $c;                              
+                                        $cgc->save();                                   
+
+                                    }
+                                    
+                                    $functions = explode(',', $_POST['function'.$i]);
+                                    
+                                    foreach($functions as $f){
+                                        $fun = new ContactFunction;
+                                        $fun->contact = $model->contact_id;
+                                        $fun->company = $companies;
+                                        $fun->function = $f;
+                                        $fun->save();                                   
+
+                                    }
+                                    
+                                    $channels = explode(',', $_POST['inputchannel'.$i]);
+                                        //echo $_POST['inputchannel'.$i];
+                                        
+                                        foreach($channels as $ch){
+                                        $rolechannel = new RoleChannel;
+                                        $rolechannel->contact = $model->contact_id;
+                                        $rolechannel->company = $companies;
+                                        $rolechannel->channel = $ch;
+                                        $rolechannel->save();                                   
+
+                                    }
+                                    
+                                }
+
+                            }
+                            
+                        }
+                        if(isset($_POST['freelanceactivity'])){
+                            $countries = explode(',',$_POST['countryfreelance']);
+
+                                    foreach($countries as $c){
+                                        $cgc = new ContactGeoCoverage;
+                                        $cgc->contact = $model->contact_id;
+                                        $cgc->company = 999999999;
+                                        $cgc->geoCountry = $c;
+                                        $cgc->save();                                   
+
+                                    }
+                                    $functions = explode(',', $_POST['functionfreelance']);
+
+                                    foreach($functions as $f){
+                                        $fun = new ContactFunction;
+                                        $fun->contact = $model->contact_id;
+                                        $fun->company = 999999999;
+                                        $fun->function = $f;
+                                        $fun->save();                                   
+
+                                    }
+                                    
+                                    $channels = explode(',', $_POST['channelfreelance']);
+                                        
+                                    foreach($channels as $ch){
+                                        $rolechannel = new RoleChannel;
+                                        $rolechannel->contact = $model->contact_id;
+                                        $rolechannel->company = 999999999;
+                                        $rolechannel->channel = $ch;
+                                        $rolechannel->save();                                   
+
+                                    }
+                        }
+                          $this->redirect(array('dashbord','id'=>$model->contact_id));  
+                        }
+
+                        
 		}
 
                 $categories = new BusinessCategory;
                 $iso_language = new IsoLanguage;
                 $company = new Company;
                 
+                $contact_id = Yii::app()->user->id;
+                $companyselected = ContactGeoCoverage::model()->findAllBySql(" select distinct(company_id) from contact_geo_coverage where contact_id = $contact_id and company_id <> 999999999");
+                $freelanceselected = ContactGeoCoverage::model()->findAllBySql(" select distinct(company_id) from contact_geo_coverage where contact_id = $contact_id and company_id = 999999999");
+                
 		 $this->render('update', array(
-            'model' => $model, 'categories'=>$categories, 'iso_language'=>$iso_language, 'company'=>$company
+            'model' => $model, 'categories'=>$categories, 'iso_language'=>$iso_language, 'company'=>$company, 'companyselected'=>$companyselected, 'contact_id'=>$contact_id,'freelanceselected'=>$freelanceselected
         ));
     }
 

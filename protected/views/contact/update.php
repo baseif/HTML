@@ -277,14 +277,15 @@ echo CHtml::activeDropDownList($iso_language,'lang_iso',
                 <button id="add" type="button" class="btn btn-info">Add Company</button>
                
                 <div id="items">
-                    
-                
+                 <?php $i=1; ?>   
+                <input type="hidden" name="nbfield" id="nbfield" value="<?php echo $i ?>" />
                  <?php
-                 $i=1;
+                 
                 foreach($companyselected as $valuecompany){
                     ?>
-                <input type="hidden" name="nbfield" id="nbfield" value="<?php echo $i ?>" />
-                <script>        
+                
+                <script>    
+                document.getElementById('nbfield').value = <?php echo $i ?>;    
                 $(document).ready(function() {
                  //when the Add Filed button is clicked
         var i = <?php echo $i ?>;
@@ -409,7 +410,6 @@ foreach ($channel as $value) {
                 <script>
                var i=<?php echo $i; ?>    
                 $("#add").click(function(e) {
-            
             document.getElementById('nbfield').value = i;
            
             //Append a new row of code to the "#items" div
@@ -417,9 +417,13 @@ foreach ($channel as $value) {
 
             $("#inputcompany" + i).tokenInput([
 <?php
-foreach ($company as $value) {
+$company = Company::model()->FindAllWithNofreelance();
+if(count($company)>0){
+   foreach ($company as $value) {
     echo '{id:' . $value->comp_id . ', name:"' . $value->comp_name . '"},';
+} 
 }
+
 ?>
             ], {theme: "facebook", preventDuplicates: true, tokenLimit: 1
             });
@@ -428,8 +432,10 @@ foreach ($company as $value) {
 
             $("#inputcountry" + i).tokenInput([
 <?php
+if(count($country)>0){
 foreach ($country as $value) {
     echo '{id:"' . $value->country_iso . '", name:"' . $value->country_name . '"},';
+}
 }
 ?>
             ], {theme: "facebook", preventDuplicates: true,
@@ -437,8 +443,10 @@ foreach ($country as $value) {
 
             $("#inputfunction" + i).tokenInput([
 <?php
+if(count($function)>0){
 foreach ($function as $value) {
     echo '{id:' . $value->function_id . ', name:"' . $value->function_title . '"},';
+}
 }
 ?>
             ], {theme: "facebook", preventDuplicates: true,
@@ -447,8 +455,10 @@ foreach ($function as $value) {
             
             $("#inputchannel" + i).tokenInput([
 <?php
+if(count($channel)>0){
 foreach ($channel as $value) {
     echo '{id:' . $value->channel_id . ', name:"' . $value->channel_title . '"},';
+}
 }
 ?>
             ], {theme: "facebook", preventDuplicates: true,

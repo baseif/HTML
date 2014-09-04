@@ -444,4 +444,13 @@ class ClientController extends Controller
         ));
         
     }
+    
+    public function  actionIncreaseCredit(){
+        
+        $this->render('/Client/increasecredit', array(
+            'credit_historys' => $credit_historys,
+        ));
+        
+    }
+    
 }
