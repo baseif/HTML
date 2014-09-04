@@ -133,7 +133,7 @@ document.getElementById("ListContact_list_id").disabled = true;
     
     
     <div class="row">
-  <h4>  <div class="col-md-10 col-md-offset-3 "><i class="fa fa-globe fa-lg"></i>  Media : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <h4>  <div class="col-md-10 col-md-offset-3 "><i class="fa fa-youtube-play fa-lg"></i>  Media : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <?php
         
         $data = CHtml::listData(Channel::model()->findAll(), 'channel_id', 'channel_title');

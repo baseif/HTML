@@ -82,24 +82,22 @@ $this->breadcrumbs = array(
 </p>
 
 <p>
-<div class="span-">
+    
 <?php echo $form->radioButtonListGroup(
 			$client,
 			'credittype',
 			array(
-                            
 				'widgetOptions' => array(
 					'data' => array(
 						
-						Yii::t('app','<div class="typeaccount">Annual subscription</div> <div class="price">2,450 €</div>'),
-                                                Yii::t('app','<div class="typeaccount">Starters Offer 1000 Credits</div> <div class="price"> 350,00 €</div>'),
-                                                Yii::t('app','<div class="typeaccount">Free Package</div>'),
+						Yii::t('app','Annual subscription => 2,450 €'),
+                                                Yii::t('app','Starters Offer => 1000 Credits | 350,00 €'),
+                                                Yii::t('app','Free Package'),
 					)
-				),
-                            'wrapperHtmlOptions' => array('class' => 'col-sm-7')
+				)
 			)
 		); ?>
-    </div>
+    
 </p>
 
   </div> 

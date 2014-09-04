@@ -27,7 +27,7 @@ $('.search-form form').submit(function(){
             <tr  class="active">
                 <th id="list-contact-grid_c3"><i class="fa fa-calendar  fa-2x"></i> <?php echo Yii::t('app', 'Press Release sent'); ?> </th>
                 <th id="list-contact-grid_c3"><i class="fa fa-list-alt  fa-2x"></i> <?php echo Yii::t('app', 'Contact List'); ?> </th>     
-                <th id="list-contact-grid_c2"><i class="fa fa-picture-o  fa-2x"></i>  <?php echo Yii::t('app', 'credits'); ?>   </th>
+                <th id="list-contact-grid_c2"><i class="fa fa fa-money  fa-2x"></i>  <?php echo Yii::t('app', 'Credits'); ?>   </th>
 
                 <th></th>
             </tr>

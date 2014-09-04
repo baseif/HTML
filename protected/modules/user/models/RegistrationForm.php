@@ -16,8 +16,9 @@ class RegistrationForm extends User {
     public function rules() {
         $rules = array(
             array('username, password, verifyPassword, email', 'required'),
-            array('username', 'length', 'max' => 20, 'min' => 3, 'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
-            array('password', 'length', 'max' => 128, 'min' => 6, 'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
+            array('username', 'length', 'max' => 20, 'min' => 6, 'message' => UserModule::t("Incorrect username (length between 6 and 20 characters).")),
+            array('password', 'length', 'max' => 128, 'min' => 6, 'message' => UserModule::t("Incorrect password (minimal length 6 symbols).")),
+            array('password', 'match', 'pattern' => '/\W/', 'message' => 'Password must contain at least one special character.'),  
                 
            // array('password1', 'passwordStrength', 'strength'=>self::STRONG),
             array('email', 'email'),
