@@ -88,6 +88,8 @@ class PressController extends Controller {
         $this->performAjaxValidation($model);
         if (isset($_POST['yt0']) && isset($_POST['Press'])) {
             $model->attributes = $_POST['Press'];
+           // $model->press_content = $_POST['Press']['press_content'];
+           //print_r($model->press_content);
             $content = $model->press_content;
             $content = str_replace("\r\n", '', $content);
             $email->html = $content;

@@ -35,9 +35,9 @@ class ClientController extends Controller
     'actions'=>array('index','dashbord','create'),
     'users'=>array('*'),
    ),
-   array('allow', // allow authenticated user to perform 'create' and 'update' actions
-    'actions'=>array('myfinancials','cancel','confirm','buy','extendmembership','view','update','blacklist','blacklistchoice','allblacklistchoice','removeallblacklistchoice','removeblacklistchoice'),
-    'users'=>array('@'),
+ array('allow', // allow authenticated user to perform 'create' and 'update' actions
+        'actions' => array('myfinancials','confirmbuycredits', 'cancelbuycredits', 'buycredits', 'cancel', 'confirm', 'buy', 'extendmembership', 'view', 'update', 'blacklist', 'blacklistchoice', 'allblacklistchoice', 'removeallblacklistchoice', 'removeblacklistchoice'),
+        'users' => array('@'),
    ),
    array('allow', // allow admin user to perform 'admin' and 'delete' actions
     'actions'=>array('admin','delete'),
@@ -175,11 +175,14 @@ class ClientController extends Controller
     }
  }
     public function actionDashbord() {
-
         $model = Client::model()->findByPk(Yii::app()->user->id);
-
+        $credit_historys = CreditHistory::model()->findAllByPk(Yii::app()->user->id);
+        $credit_used = null;
+        foreach ($credit_historys as  $credit_history ){          
+            $credit_used = $credit_used+ $credit_history->ch_amount;
+        }
         $this->render('/Client/dashbord', array(
-            'model' => $model,
+            'model' => $model,'credit_used'=>$credit_used
 
         ));
     }
@@ -290,7 +293,7 @@ class ClientController extends Controller
         // set 
         if (Yii::app()->session['credit_amount'] == 9000) {
             $paymentInfo['Order']['theTotal'] = 2450.00;
-            $paymentInfo['Order']['description'] = "Annual subscription";
+            $paymentInfo['Order']['description'] = "Pan African Account";
             $paymentInfo['Order']['quantity'] = '1';
         } else {
             $paymentInfo['Order']['theTotal'] = 350.00;
@@ -431,8 +434,8 @@ class ClientController extends Controller
 
         $this->render('Client/cancel');
     }
-    
-     public function  actionMyFinancials(){
+   
+  public function  actionMyFinancials(){
           $press_user = Yii::app()->user->id;
         $criteria = new CDbCriteria;
         $criteria->condition = 'ch_user=:press_user';
@@ -441,8 +444,104 @@ class ClientController extends Controller
          $credit_historys = CreditHistory::model()->findAll($criteria); 
         $this->render('/Client/myfinancials', array(
             'credit_historys' => $credit_historys,
-        ));
-        
+  ));}
+
+    public function actionBuyCredits() {
+        Yii::app()->session['credit_price'] = $_POST['credit_price'];
+        Yii::app()->session['credit'] = $_POST['credit'];
+        // set      
+        $paymentInfo['Order']['theTotal'] = Yii::app()->session['credit_price'];
+        $paymentInfo['Order']['description'] = "Basic Package x " . Yii::app()->session['credit'];
+        $paymentInfo['Order']['quantity'] = '1';
+        // call paypal 
+        $result = Yii::app()->PaypalCredits->SetExpressCheckout($paymentInfo);
+        //Detect Errors 
+        if (!Yii::app()->PaypalCredits->isCallSucceeded($result)) {
+            if (Yii::app()->PaypalCredits->apiLive === true) {
+                //Live mode basic error message
+                $error = 'We were unable to process your request. Please try again later';
+            } else {
+                //Sandbox output the actual error message to dive in.
+                $error = $result['L_LONGMESSAGE0'];
+            }
+            echo $error;
+            Yii::app()->end();
+        } else {
+            // send user to paypal 
+            $token = urldecode($result["TOKEN"]);
+
+            $payPalURL = Yii::app()->PaypalCredits->paypalUrl . $token;
+            $this->redirect($payPalURL);
+        }
+        return $token;
+    }
+
+    public function actionConfirmBuyCredits() {
+        $user_package = UserPackage::model()->findByPk(Yii::app()->user->id);
+        $token = trim($_GET['token']);
+        $payerId = trim($_GET['PayerID']);
+        $result = Yii::app()->PaypalCredits->GetExpressCheckoutDetails($token);
+        $result['PAYERID'] = $payerId;
+        $result['TOKEN'] = $token;
+        $result['ORDERTOTAL'] = Yii::app()->session['credit_price'];
+        //Detect errors 
+        if (!Yii::app()->PaypalCredits->isCallSucceeded($result)) {
+            if (Yii::app()->PaypalCredits->apiLive === true) {
+                //Live mode basic error message
+                $error = 'We were unable to process your request. Please try again later';
+            } else {
+                //Sandbox output the actual error message to dive in.
+                $error = $result['L_LONGMESSAGE0'];
+            }
+            echo $error;
+            Yii::app()->end();
+        } else {
+
+            $paymentResult = Yii::app()->PaypalCredits->DoExpressCheckoutPayment($result);
+            //Detect errors  
+            if (!Yii::app()->PaypalCredits->isCallSucceeded($paymentResult)) {
+                if (Yii::app()->PaypalCredits->apiLive === true) {
+                    //Live mode basic error message
+                    $error = 'We were unable to process your request. Please try again later';
+                } else {
+                    //Sandbox output the actual error message to dive in.
+                    $error = $paymentResult['L_LONGMESSAGE0'];
+                }
+                echo $error;
+                Yii::app()->end();
+            } else {
+                //payment was completed successfully
+                //etention purchase
+                $paypal_transactions = new PaypalTransactions;
+                $paypal_transactions->pp_pay_type = $paymentResult['PAYMENTTYPE'];
+                $paypal_transactions->pp_txn_type = $paymentResult['PAYMENTTYPE'];
+                $paypal_transactions->pp_amount = $paymentResult['AMT'];
+                $paypal_transactions->pp_tax = $paymentResult['TAXAMT'];
+                $paypal_transactions->pp_pay_status = $paymentResult['PAYMENTSTATUS'];
+                $paypal_transactions->pp_payer_email = $result['EMAIL'];
+                $paypal_transactions->pp_payer_id = $result['PAYERID'];
+                $paypal_transactions->pp_date = $paymentResult['ORDERTIME'];
+                $paypal_transactions->pp_user_id = Yii::app()->user->id;
+                if ($user_package->utype_credits == NULL) {
+                    $user_package->utype_credits = Yii::app()->session['credit'];
+                } else {
+                    $user_package->utype_credits = $user_package->utype_credits + Yii::app()->session['credit'];
+                }
+                $user_package->save(false);
+                $paypal_transactions->save(false);
+
+
+                $this->render('Client/confirmbuycredits');
+            }
+        }
+    }
+
+    public function actionCancelBuyCredits() {
+
+        //The token of the cancelled payment typically used to cancel the payment within your application
+        $token = $_GET['token'];
+
+        $this->render('Client/cancelbuycredits');
     }
     
     public function  actionIncreaseCredit(){

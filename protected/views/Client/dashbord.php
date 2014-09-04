@@ -81,8 +81,8 @@
             <img width="92" height="83" src="<?php echo Yii::app()->request->baseUrl; ?>/images/dash-stats.png">
             <table cellspacing="0" cellpadding="2" style="margin-top: 15px;">
                 <tbody>
-                    <tr><td><?php echo  Yii::t('app','Type of Account') ?>:</td>
-                        <td></td></tr>
+                    <tr><td><?php echo  Yii::t('app','Type of Account')  ?>:</td>
+                        <td><?php echo $credit_used ;?></td></tr>
                     <tr><td><?php echo  Yii::t('app','Days left') ?>:</td>
                         <td></td></tr>
                     <tr><td><?php echo  Yii::t('app','Press Releases Sent') ?>:</td>

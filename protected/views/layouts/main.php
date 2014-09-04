@@ -78,7 +78,7 @@
                                         array('label' => Yii::t('app', 'For who and how'), 'url' => array('/site/forwhoandhow')),
                                         array('label' => Yii::t('app', 'How to use'), 'url' => array('/site/howtouse')),
                                         array('label' => Yii::t('app', 'Tips to write'), 'url' => array('/site/tipstowrite')),
-                                        array('label' => Yii::t('app', 'Press'), 'url' => '#'),
+                                     //   array('label' => Yii::t('app', 'Press'), 'url' => '#'),
                                     )
                                 ),
                                 array('label' => Yii::t('app', 'Costs of Use'), 'url' => array('/site/costofuse'), 'visible' => Yii::app()->user->isGuest),
@@ -132,10 +132,10 @@
                                     'url' => '',
                                     'items' => array(
 
-                                        array('label' => 'Upgrade Account', 'url' => array('/client/extendmembership')),
-                                        array('label' => 'Add credits', 'url' => array('')),
+                                        array('label' => 'Extend Membership', 'url' => array('/client/extendmembership')),
+                                        array('label' => 'Add credits', 'url' => array('/client/buycredits')),
                                         array('label' => 'My Financials', 'url' => array('/client/myfinancials')),
-                                        array('label' => 'Spent Credits History', 'url' => array('')),
+                                    //    array('label' => 'Spent Credits History', 'url' => array('')),
 
 
                                     )),

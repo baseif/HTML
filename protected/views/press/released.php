@@ -43,7 +43,7 @@ $('.search-form form').submit(function(){
     
      <?php   
  foreach($presses as  $value){    
-     if ($value->press_status='C'){
+     if ($value->press_status == 'C'){
      echo '<tr><td>'.'COMPLETED'.'</td>';}
      else{
          echo '<tr><td>'.'FAILED'.'</td>';

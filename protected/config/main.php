@@ -117,6 +117,23 @@ return array(
         //The version of the paypal api to use, defaults to '3.0' (review PayPal documentation to include a valid API version)
         //'version' => '3.0',
         ),
+         'PaypalCredits' => array(
+            'class' => 'application.components.PaypalCredits',
+            'apiUsername' => 'mohamedaymen.mastouri-facilitator_api1.esprit.tn',
+            'apiPassword' => '1407448515',
+            'apiSignature' => 'ASIxIIKpi7xROmHHHOfwKK9FrsJ9AifN-gJkvT8Rn6FM.4EQMCZJ7DYP',
+            'apiLive' => false,
+            'returnUrl' => '/client/confirmBuyCredits/', //regardless of url management component
+            'cancelUrl' => '/client/cancelBuyCredits/', //regardless of url management component
+            // Default currency to use, if not set USD is the default
+            'currency' => 'EUR',
+        // Default description to use, defaults to an empty string
+        //'defaultDescription' => '',
+        // Default Quantity to use, defaults to 1
+        // 'defaultQuantity' => '1',
+        //The version of the paypal api to use, defaults to '3.0' (review PayPal documentation to include a valid API version)
+        //'version' => '3.0',
+        ),
         'mandrillwrap' => array(
             'class' => 'ext.mandrillwrap.mandrillwrap',
         ),
@@ -148,6 +165,7 @@ return array(
         ),
         'user' => array(
             'class' => 'RWebUser',
+            
             // enable cookie-based authentication
             'allowAutoLogin' => true,
             'loginUrl' => array('/user/login'),
@@ -200,21 +218,21 @@ return array(
        //     'connectionString' => 'sqlite:' . dirname(__FILE__) . '/../data/testdrive.db',
        // ),
         // uncomment the following to use a MySQL database
-        'db' => array(
-            'connectionString' => 'mysql:host=localhost;dbname=presslist',
-            'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'root',
-            'charset' => 'utf8',
-        ),
+//        'db' => array(
+//            'connectionString' => 'mysql:host=localhost;dbname=presslist',
+//            'emulatePrepare' => true,
+//            'username' => 'root',
+//            'password' => 'root',
+//            'charset' => 'utf8',
+//        ),
 ////            
-//                'db'=>array(
-//			'connectionString' => 'mysql:host=localhost;dbname=webside_apl',
-//			'emulatePrepare' => true,
-//			'username' => 'webside_apl',
-//			'password' => 'F}-LT[Z3Vns2',
-//			'charset' => 'utf8',
-//		),
+                'db'=>array(
+			'connectionString' => 'mysql:host=localhost;dbname=webside_apl',
+			'emulatePrepare' => true,
+			'username' => 'webside_apl',
+			'password' => 'F}-LT[Z3Vns2',
+			'charset' => 'utf8',
+		),
         'errorHandler' => array(
             // use 'site/error' action to display errors
             'errorAction' => 'site/error',

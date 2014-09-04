@@ -63,10 +63,8 @@ class RegistrationClientController extends Controller {
 
 
                         if (Yii::app()->controller->module->sendActivationMail) {
-
-
                             $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
-
+                            Yii::app()->session['activation_url'] = $activation_url;
                             Yii::import('ext.yii-mail.YiiMailMessage');
                             $message = new YiiMailMessage;
                             $message->setBody(
@@ -90,9 +88,11 @@ browser)<br />
                                             , array('{activation_url}' => $activation_url))
                                     , 'text/html');
                             $message->subject = UserModule::t("Registration at {site_name}", array('{site_name}' => Yii::app()->name));
+                            Yii::app()->session['subject'] = $message->subject;
                             $message->addTo($model->email);
+                            Yii::app()->session['email'] = $model->email;
                             $message->from = Yii::app()->params['adminEmail'];
-                            Yii::app()->mail->send($message);
+                            Yii::app()->session['form'] = Yii::app()->params['adminEmail'];
 
 
                             //UserModule::sendMail($user->email,$subject,$message);
@@ -119,7 +119,7 @@ browser)<br />
                                 Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Please check your email or login."));
                             } else {
                                 Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Please check your email."));
-                                if (Yii::app()->session['type'] == '3') {
+                                if (Yii::app()->session['type'] == 2) {
 ///
                                     $user = Client::model()->findByPk(Yii::app()->session['id']);
                                     $credit = new Credit;
@@ -139,6 +139,7 @@ browser)<br />
                                     $credit_user->utype_credits = $credit->credit_amount;
                                     $credit_user->save(false);
                                     $user->save(false);
+                                    Yii::app()->mail->send($message);
                                     ////
                                 } else {
                                     $this->actionBuy();
@@ -171,7 +172,7 @@ browser)<br />
         // set 
         if (Yii::app()->session['type'] == 0) {
             $paymentInfo['Order']['theTotal'] = 2450.00;
-            $paymentInfo['Order']['description'] = "Annual subscription";
+            $paymentInfo['Order']['description'] = "Pan African Account";
             $paymentInfo['Order']['quantity'] = '1';
         } else {
             $paymentInfo['Order']['theTotal'] = 350.00;
@@ -202,12 +203,10 @@ browser)<br />
     }
 
     public function actionConfirm() {
+
         $user = Client::model()->findByPk(Yii::app()->session['id']);
         $token = trim($_GET['token']);
         $payerId = trim($_GET['PayerID']);
-
-
-
         $result = Yii::app()->Paypal->GetExpressCheckoutDetails($token);
 
         $result['PAYERID'] = $payerId;
@@ -248,7 +247,35 @@ browser)<br />
             } else {
                 //payment was completed successfully
                 //first purchase
+            Yii::import('ext.yii-mail.YiiMailMessage');
+                $message = new YiiMailMessage;
+                $message->setBody(
+                        UserModule::t("
+This email has been sent from http://www.africapresslist.com/ <br /><br />
+You have received this email because this email address
+was used during registration for our site.
+If you did not register at our site, please disregard this
+email. You do not need to unsubscribe or take any further action. <br /><br />
+-----------------------------------------------
+Activation Instructions
+------------------------------------------------ <br /><br />
+We require that you 'validate' your registration to ensure that
+the email address you entered was correct. This protects against
+unwanted spam and malicious abuse .<br />
+To activate your account, simply click on the following link: <br /><br />
+{activation_url} <br /><br />
+(Some email client users may need to copy and paste the link into your web
+browser)<br />
+                                           <br /> Thank you for registering ."
+                                , array('{activation_url}' =>      Yii::app()->session['activation_url']))
+                        , 'text/html');
+                $message->subject = Yii::app()->session['subject'] ;
+                $message->addTo( Yii::app()->session['email']);
+ 
+                $message->from =Yii::app()->session['form'];
+                Yii::app()->session['form'] = Yii::app()->params['adminEmail'];
 
+                Yii::app()->mail->send($message);
                 $credit = new Credit;
                 $credit_package = new CreditPackage;
                 $credit_user = new UserPackage;
@@ -263,8 +290,8 @@ browser)<br />
                 $paypal_transactions->pp_date = $paymentResult['ORDERTIME'];
                 $paypal_transactions->pp_user_id = Yii::app()->session['id'];
                 if (Yii::app()->session['type'] == 0) {
-                    $paypal_transactions->pp_item = "full package";
-                    $credit_package->package_title = 'full package';
+                    $paypal_transactions->pp_item = "Pan African Account";
+                    $credit_package->package_title = 'Pan African Account';
                     $credit->credit_show = 'N';
                     $credit->credit_amount = 9000;
                     $credit->credit_price = 2450.00;
@@ -282,10 +309,9 @@ browser)<br />
                     $credit_user->save(false);
                     $user->user_credits = $credit->credit_amount;
                     $user->save(false);
-                    
                 } else {
-                    $paypal_transactions->pp_item = "notfull package";
-                    $credit_package->package_title = ' notfull package';
+                    $paypal_transactions->pp_item = "Starters Offer ";
+                    $credit_package->package_title = ' Starters Offer ';
                     $credit->credit_show = 'N';
                     $credit->credit_amount = 1000;
                     $credit->credit_price = 350.00;
@@ -296,13 +322,13 @@ browser)<br />
                     $credit_user->user_id = Yii::app()->session['id']; //  hier muss der id zugewiesen  werden 
                     $credit_user->credit_package_id = $credit_package->credit_package_id;
                     $credit_user->utype_credits = $credit->credit_amount;
-                    
+
                     $credit_user->save(false);
                     $paypal_transactions->save(false);
                     $user->user_credits = $credit->credit_amount;
                     $user->save(false);
                 }
-                
+
                 $this->render('/Client/confirm');
             }
         }
